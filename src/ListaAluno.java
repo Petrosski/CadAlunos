@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.transform.Result;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 public class ListaAluno extends JFrame{
     private JTable tblTable;
@@ -23,6 +25,20 @@ public class ListaAluno extends JFrame{
         setVisible(true);
     }
     public void AddListiner(){
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Connection connection = null;
+                try{
+                    int linhaSelecionada = tblTable.getSelectedRow();
+                    if (linhaSelecionada < 0){
+                        JOptionPane.showMessageDialog(null, "Selecione uma linha para excluir");
+                        return;
+                    }
+                }
+            }
+        });
+
         DefaultTableModel alunos = new DefaultTableModel();
         alunos.addColumn("Nome");
         alunos.addColumn("Matricula");
