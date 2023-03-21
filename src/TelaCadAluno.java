@@ -27,7 +27,7 @@ public class TelaCadAluno extends JFrame {
         Conecta();
     }
 
-    public void AddListeners(){
+    public void AddListeners() {
         btnLimpar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,7 +35,17 @@ public class TelaCadAluno extends JFrame {
                 textMatricula.setText("");
             }
         });
+
+        btnLista.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListaAluno listar = new ListaAluno();
+                listar.setVisible(true);
+                dispose();
+            }
+        });
     }
+
 
     public void Conecta() {
 

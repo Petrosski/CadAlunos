@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.Result;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -8,6 +7,7 @@ public class ListaAluno extends JFrame{
     private JTable tblTable;
     private JPanel PNLListaAluno;
     private JButton btnExcluir;
+    private JButton btnVoltar;
     final String URL = "jdbc:mysql://localhost:3306/cadaluno";
     final String USER = "root";
     final String PASSWORD = "root";
@@ -25,6 +25,14 @@ public class ListaAluno extends JFrame{
         setVisible(true);
     }
     public void AddListiner(){
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaCadAluno telaCadAluno = new TelaCadAluno();
+                telaCadAluno.setVisible(true);
+                dispose();
+            }
+        });
         btnExcluir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,6 +43,23 @@ public class ListaAluno extends JFrame{
                         JOptionPane.showMessageDialog(null, "Selecione uma linha para excluir");
                         return;
                     }
+                    int matricula = (int) tblTable.getValueAt(linhaSelecionada,1);
+
+                    connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                    PreparedStatement stmt = connection.prepareStatement(EXCLUIR);
+                    stmt .setInt(1, matricula);
+                    int resultado = stmt.executeUpdate();
+                    if (resultado == 1){
+                        JOptionPane.showMessageDialog(null, "Registro exlcuido com sucesso!");
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Erro ao excluir registro!");
+                    }
+                    DefaultTableModel aluno = (DefaultTableModel) tblTable.getModel();
+                    aluno.removeRow(linhaSelecionada);
+                }catch (SQLException ex){
+                    System.out.println("Erro ao exluir registro: "+ex.getMessage());
+                }catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Selecione uma linha para excluir");
                 }
             }
         });
